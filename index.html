@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Bazar — Geography of India 3rd Sem | Unit 4 | কৃষি</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Syne',sans-serif;background:#f0faf4;min-height:100vh;color:#1c2e24}
+.top-bar{background:#1a7a4a;padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.top-logo{font-size:1.1rem;font-weight:800;color:white}.top-logo span{color:#f9a825}
+.timer-box{background:rgba(255,255,255,0.15);border-radius:8px;padding:0.4rem 1rem;display:flex;align-items:center;gap:6px;font-size:1rem;font-weight:700;color:white}
+.timer-box.danger{background:#dc3545}
+.main{max-width:820px;margin:0 auto;padding:1.5rem 1rem}
+.hub-header{text-align:center;margin-bottom:2rem}
+.hub-header h1{font-family:'Tiro Bangla',serif;font-size:1.8rem;color:#1c2e24}
+.hub-header p{font-family:'Tiro Bangla',serif;font-size:0.95rem;color:#5a7a66;margin-top:0.3rem}
+.set-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.set-card{background:white;border-radius:14px;padding:1.5rem;border:1.5px solid #c5dccb;transition:all 0.2s;cursor:pointer;color:#1c2e24;box-shadow:0 2px 8px rgba(26,122,74,0.06);position:relative}
+.set-card:hover{transform:translateY(-3px);border-color:#1a7a4a;box-shadow:0 6px 20px rgba(26,122,74,0.12)}
+.set-card .icon{font-size:2.2rem;margin-bottom:0.3rem}
+.set-card .set-num{font-weight:700;font-size:1.1rem;color:#1a7a4a}
+.set-card .set-title{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin:0.2rem 0 0.5rem}
+.set-card .set-meta{display:flex;gap:1rem;font-size:0.7rem;color:#5a7a66}
+.set-card .set-meta span{background:#f0faf4;padding:0.15rem 0.6rem;border-radius:4px}
+.set-card .attempt-badge{position:absolute;top:10px;right:10px;background:#fff3cd;color:#856404;font-size:0.65rem;padding:0.2rem 0.5rem;border-radius:10px;font-weight:700;border:1px solid #ffc107}
+.set-card .attempt-badge.full{background:#f8d7da;color:#721c24;border-color:#f5c6cb}
+.quiz-info{background:white;border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;border:1px solid #c5dccb;display:flex;gap:1rem;flex-wrap:wrap}
+.info-item{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66}
+.info-item strong{color:#1a7a4a}
+.progress-wrap{background:#c5dccb;border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
+.progress-fill{height:100%;background:#1a7a4a;border-radius:4px;transition:width 0.3s}
+.q-card{background:white;border-radius:14px;padding:1.4rem;margin-bottom:1rem;border:1px solid #c5dccb;box-shadow:0 2px 10px rgba(26,122,74,0.06)}
+.q-num{font-size:0.75rem;font-weight:700;color:#e8730a;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.6rem}
+.q-text{font-family:'Tiro Bangla',serif;font-size:1rem;color:#1c2e24;line-height:1.7;margin-bottom:1.1rem}
+.opts{display:flex;flex-direction:column;gap:0.6rem}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:0.7rem 1rem;border:1.5px solid #c5dccb;border-radius:10px;cursor:pointer;transition:all 0.15s;background:white;text-align:left;width:100%;font-family:inherit}
+.opt:hover:not(.disabled){border-color:#1a7a4a;background:#f0faf4}
+.opt-circle{min-width:28px;height:28px;border-radius:50%;border:1.5px solid #c5dccb;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5a7a66;flex-shrink:0;transition:all 0.15s}
+.opt-text{font-family:'Tiro Bangla',serif;font-size:0.92rem;color:#1c2e24;line-height:1.6;padding-top:2px}
+.opt.correct{border-color:#1a7a4a;background:#e8f7ef}
+.opt.correct .opt-circle{background:#1a7a4a;border-color:#1a7a4a;color:white}
+.opt.wrong{border-color:#dc3545;background:#fdf0f0}
+.opt.wrong .opt-circle{background:#dc3545;border-color:#dc3545;color:white}
+.opt.disabled{cursor:default}
+.explanation{background:#f0faf4;border-left:3px solid #1a7a4a;border-radius:0 8px 8px 0;padding:0.8rem 1rem;margin-top:0.8rem;display:none}
+.explanation.show{display:block}
+.explanation p{font-family:'Tiro Bangla',serif;font-size:0.88rem;color:#2c4035;line-height:1.7}
+.explanation strong{color:#1a7a4a}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:0.8rem}
+.score-show{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66}
+.next-btn{background:#1a7a4a;color:white;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:0.9rem;cursor:pointer;transition:all 0.15s}
+.next-btn:hover{background:#2aad68}
+.next-btn:disabled{background:#c5dccb;cursor:default}
+.result-wrap{background:white;border-radius:14px;padding:2rem;text-align:center;border:1px solid #c5dccb;display:none}
+.result-wrap.show{display:block}
+.result-icon{font-size:3rem;margin-bottom:0.5rem}
+.result-score{font-size:3.5rem;font-weight:800;color:#1a7a4a}
+.result-total{font-size:1rem;color:#5a7a66;margin-bottom:0.5rem;font-family:'Tiro Bangla',serif}
+.result-grade{font-size:1.2rem;font-weight:600;color:#1c2e24;margin-bottom:1.5rem;font-family:'Tiro Bangla',serif}
+.result-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.5rem}
+.result-bar{background:#f0faf4;border-radius:10px;padding:0.8rem;text-align:center}
+.rb-num{font-size:1.4rem;font-weight:800}
+.rb-label{font-family:'Tiro Bangla',serif;font-size:0.8rem;color:#5a7a66;margin-top:0.2rem}
+.retry-btn{background:#1a7a4a;color:white;border:none;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer;margin-right:0.5rem}
+.retry-btn:disabled{background:#c5dccb;cursor:not-allowed}
+.review-btn{background:white;color:#1a7a4a;border:1.5px solid #1a7a4a;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer}
+.back-btn{background:white;color:#5a7a66;border:1.5px solid #c5dccb;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer;margin-top:0.6rem}
+.login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999;display:none}
+.login-overlay.active{display:flex}
+.login-modal{background:white;border-radius:16px;padding:2.5rem;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.login-modal h2{font-family:'Tiro Bangla',serif;font-size:1.3rem;color:#1c2e24;text-align:center;margin-bottom:0.3rem}
+.login-modal p{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;text-align:center;margin-bottom:1.5rem}
+.login-modal label{font-size:0.8rem;font-weight:600;color:#1c2e24;display:block;margin-bottom:0.3rem}
+.login-modal input{width:100%;padding:0.7rem 1rem;border:1.5px solid #c5dccb;border-radius:8px;font-size:0.95rem;margin-bottom:1rem;font-family:'Tiro Bangla',serif}
+.login-modal input:focus{outline:none;border-color:#1a7a4a}
+.login-modal .login-btn{width:100%;background:#1a7a4a;color:white;border:none;padding:0.75rem;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Tiro Bangla',serif}
+.login-modal .login-btn:hover{background:#2aad68}
+.login-modal .login-btn:disabled{background:#c5dccb;cursor:not-allowed}
+.login-modal .error-msg{color:#dc3545;font-size:0.8rem;text-align:center;margin-top:0.5rem;font-family:'Tiro Bangla',serif;display:none}
+.login-modal .limit-info{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 1rem;margin-bottom:1rem;font-family:'Tiro Bangla',serif;font-size:0.8rem;color:#856404;display:none}
+.login-modal .set-name-display{background:#f0faf4;border-radius:8px;padding:0.5rem;text-align:center;margin-bottom:1rem;font-family:'Tiro Bangla',serif;font-size:0.9rem;color:#1a7a4a;font-weight:600}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-logo">Test <span>Bazar</span></div>
+  <div class="timer-box" id="timerBox">⏱ <span id="timerDisplay">10:00</span></div>
+</div>
+
+<div class="main">
+
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-modal">
+      <h2>🔐 লগইন করুন</h2>
+      <p>Test শুরু করতে আপনার ইউজারনেম ও পাসওয়ার্ড দিন</p>
+      <div class="set-name-display" id="loginSetName">📚 Set 1</div>
+      <div class="limit-info" id="limitInfo">⚠️ <span id="limitMsg"></span></div>
+      <label>ইউজারনেম</label>
+      <input type="text" id="loginUsername" placeholder="আপনার ইউজারনেম লিখুন">
+      <label>পাসওয়ার্ড</label>
+      <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter') doLoginFromSet()">
+      <button class="login-btn" id="loginBtn" onclick="doLoginFromSet()">✅ লগইন করে Test শুরু করো</button>
+      <div class="error-msg" id="loginError">❌ ভুল ইউজারনেম বা পাসওয়ার্ড। আবার চেষ্টা করুন।</div>
+    </div>
+  </div>
+
+  <div id="hubPage">
+    <div class="hub-header">
+      <h1>📚 ভারতের ভূগোল — Unit 4: কৃষি (Agriculture)</h1>
+      <p>শস্যবর্ষ, শস্যাবর্তন, শস্য সমন্বয়, অর্থকরী ফসল, কৃষি বিপ্লব — নিচের সেটগুলো থেকে বেছে নিন। Test শুরু করতে সেটে ক্লিক করুন এবং লগইন করুন।</p>
+      <div id="hubUserInfo" style="font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin-top:0.5rem;"></div>
+    </div>
+    <div class="set-grid" id="setGrid"></div>
+  </div>
+
+  <div id="testArea" class="hidden">
+    <div class="quiz-info">
+      <div class="info-item">🎓 <strong id="testSetName">ভারতের ভূগোল</strong> — Unit 4 | <span id="testSetLabel">Set 1</span></div>
+      <div class="info-item">📝 <span id="testTopic">কৃষি</span></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-card" id="qCard">
+      <div class="q-num" id="qNum">প্রশ্ন ১ / ১৫</div>
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="explanation" id="explanation"><p id="explanationText"></p></div>
+      <div class="nav-row">
+        <div class="score-show" id="scoreShow">সঠিক: ০ | ভুল: ০</div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()" disabled>পরবর্তী →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-wrap" id="resultWrap">
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="result-score" id="finalScore"></div>
+    <div class="result-total">/ ১৫</div>
+    <div class="result-grade" id="resultGrade"></div>
+    <div class="result-bars">
+      <div class="result-bar"><div class="rb-num" id="rbCorrect" style="color:#1a7a4a"></div><div class="rb-label">সঠিক</div></div>
+      <div class="result-bar"><div class="rb-num" id="rbWrong" style="color:#dc3545"></div><div class="rb-label">ভুল</div></div>
+      <div class="result-bar"><div class="rb-num" id="rbPct" style="color:#e8730a"></div><div class="rb-label">স্কোর</div></div>
+    </div>
+    <div id="attemptInfo" style="font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin-bottom:1rem;"></div>
+    <button class="retry-btn" id="retryBtn" onclick="startQuiz(currentSetId)">আবার চেষ্টা করো</button>
+    <button class="review-btn" onclick="showReview()">উত্তর দেখো</button>
+    <br>
+    <button class="back-btn" onclick="goToHub()">← Hub এ ফিরে যাও</button>
+  </div>
+
+</div>
+
+<script>
+const MAX_ATTEMPTS = 10;
+const TOTAL_SETS = 5;
+
+// ===== localStorage Helper Functions =====
+function getAttemptsFromStorage(username) {
+  try {
+    const key = 'testbazar_attempts_' + username;
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : {};
+  } catch(e) {
+    return {};
+  }
+}
+
+function saveAttemptsToStorage(username, attempts) {
+  try {
+    const key = 'testbazar_attempts_' + username;
+    localStorage.setItem(key, JSON.stringify(attempts));
+  } catch(e) {
+    console.error('localStorage save error:', e);
+  }
+}
+
+function getSetAttempts(username, setId) {
+  const attempts = getAttemptsFromStorage(username);
+  return attempts[setId] || 0;
+}
+
+function incrementSetAttempts(username, setId) {
+  const attempts = getAttemptsFromStorage(username);
+  attempts[setId] = (attempts[setId] || 0) + 1;
+  saveAttemptsToStorage(username, attempts);
+  return attempts[setId];
+}
+
+const userData = [
+  {username:"alfa_romeo", password:"ARx7P29m"},
+  {username:"santos", password:"St8Qv41L"},
+  {username:"falcon", password:"Fc3MZ92k"},
+  {username:"titan", password:"Ti6Rp84W"},
+  {username:"matrix", password:"Mx5Kd73N"},
+  {username:"phoenix", password:"Ph9Js28V"},
+  {username:"cobra", password:"Cb4Ln65X"},
+  {username:"shadow", password:"Sh7Wp19Q"},
+  {username:"rocket", password:"Rc2Ty86M"},
+  {username:"warrior", password:"Wr8Az34K"},
+  {username:"eagle", password:"Eg5Xq72P"},
+  {username:"thunder", password:"Th1Vk93R"},
+  {username:"dragon", password:"Dr6Hm48N"},
+  {username:"panther", password:"Pa9Nc25J"},
+  {username:"viking", password:"Vi4Qs87L"},
+  {username:"hunter", password:"Hu7Bp31X"},
+  {username:"legend", password:"Le2Mz64T"},
+  {username:"ranger", password:"Ra8Kd95W"},
+  {username:"knight", password:"Kn3Xp57Q"},
+  {username:"turbo", password:"Tu6Lv21N"},
+  {username:"alpha", password:"Ap9Rm83K"},
+  {username:"bravo", password:"Br5Yt42M"},
+  {username:"charlie", password:"Ch7Wq16P"},
+  {username:"delta", password:"De4Nk78X"},
+  {username:"echo", password:"Ec8Jp35V"},
+  {username:"foxtrot", password:"Fx2Lm94Q"},
+  {username:"gamma", password:"Ga6Xs27T"},
+  {username:"helix", password:"He1Vp85N"},
+  {username:"inferno", password:"In9Qk43L"},
+  {username:"jaguar", password:"Ja5Mz72W"},
+  {username:"karma", password:"Ka8Rp14X"},
+  {username:"laser", password:"La3Tn67Q"},
+  {username:"meteor", password:"Me7Wx29P"},
+  {username:"nova", password:"No4Kz86M"},
+  {username:"omega", password:"Om2Lp53V"},
+  {username:"pegasus", password:"Pe9Xq71N"},
+  {username:"quantum", password:"Qu5Vr38K"},
+  {username:"rebel", password:"Re8Mz24T"},
+  {username:"storm", password:"St1Kp97W"},
+  {username:"tornado", password:"To6Nx45Q"},
+  {username:"ultra", password:"Ul3Wp82M"},
+  {username:"vector", password:"Ve7Lq19X"},
+  {username:"wolf", password:"Wo4Rm63P"},
+  {username:"xenon", password:"Xe9Tk25N"},
+  {username:"yodha", password:"Yo2Vz78K"},
+  {username:"zeus", password:"Ze8Mp41Q"},
+  {username:"atlas", password:"At5Lx93W"},
+  {username:"blaze", password:"Bl1Qn67M"},
+  {username:"cyclone", password:"Cy7Rp34T"},
+  {username:"dynamo", password:"Dy4Wk82X"},
+  {username:"apollo", password:"Ap7Kx94Lm"},
+  {username:"archer", password:"Ar3Vp62Qn"},
+  {username:"asteroid", password:"As8Tm15Rw"},
+  {username:"bandit", password:"Ba5Qz71Kp"},
+  {username:"bison", password:"Bi9Ln34Xt"},
+  {username:"bullet", password:"Bu2Wr86Mv"},
+  {username:"canyon", password:"Ca6Xp29Qk"},
+  {username:"captain", password:"Cp1Mz75Ln"},
+  {username:"comet", password:"Co8Tk43Wp"},
+  {username:"cyclonex", password:"Cy4Vr92Km"},
+  {username:"diesel", password:"Di7Lp18Qx"},
+  {username:"domino", password:"Do3Wn67Rt"},
+  {username:"duke", password:"Du9Kx25Mv"},
+  {username:"empire", password:"Em5Qp84Ln"},
+  {username:"explorer", password:"Ex2Vz39Kt"},
+  {username:"fighter", password:"Fi8Lm71Qw"},
+  {username:"galaxy", password:"Ga4Tk26Xp"},
+  {username:"gladiator", password:"Gl7Wp95Mn"},
+  {username:"gravity", password:"Gr1Nx53Lq"},
+  {username:"hawk", password:"Ha9Kz42Rt"},
+  {username:"horizon", password:"Ho5Vm87Xp"},
+  {username:"icefire", password:"Ic3Lp16Qn"},
+  {username:"impact", password:"Im8Wr74Kt"},
+  {username:"ironman", password:"Ir2Xq95Mv"},
+  {username:"jetstar", password:"Je6Nk38Lp"},
+  {username:"kingston", password:"Ki1Vp72Qw"},
+  {username:"lightning", password:"Li9Tm45Rx"},
+  {username:"majestic", password:"Ma4Kp83Ln"},
+  {username:"monster", password:"Mo7Wz21Qt"},
+  {username:"neptune", password:"Ne3Lx96Mv"},
+  {username:"ninja", password:"Ni8Qr54Kp"},
+  {username:"orbit", password:"Or2Vp73Ln"},
+  {username:"patriot", password:"Pa6Tk18Qw"},
+  {username:"pioneer", password:"Pi1Xm85Rt"},
+  {username:"predator", password:"Pr9Lq47Kv"},
+  {username:"proton", password:"Pt4Wn62Mx"},
+  {username:"rapid", password:"Ra7Kx93Lp"},
+  {username:"samurai", password:"Sa3Vp25Qn"},
+  {username:"sniper", password:"Sn8Tm71Rw"},
+  {username:"solaris", password:"So2Qk84Mv"},
+  {username:"spartan", password:"Sp6Ln39Xt"},
+  {username:"striker", password:"St1Wr57Kp"},
+  {username:"summit", password:"Su9Xp26Lm"},
+  {username:"taurus", password:"Ta5Vz91Qw"},
+  {username:"tempest", password:"Te3Kp48Rt"},
+  {username:"trident", password:"Tr8Wm72Ln"},
+  {username:"valiant", password:"Va2Nx35Qk"},
+  {username:"voyager", password:"Vo6Lp97Mx"},
+  {username:"wildfire", password:"Wi1Tk64Rv"},
+  {username:"zenith", password:"Ze9Qx28Lp"}
+];
+
+const allSets = {
+  1: {
+    name: 'Set 1',
+    icon: '🌾',
+    topic: 'শস্যবর্ষ ও শস্যাবর্তন',
+    questions: [
+      {q: 'এক বছরের মধ্যে ঋতু অনুযায়ী শস্য উৎপাদন অর্থাৎ শস্যের বণ্টন ও বিন্যাসকে কী বলে?', opts: ['শস্যাবর্তন', 'শস্য প্রগাঢ়তা', 'শস্যবর্ষ বা শস্য সময়সূচি', 'শস্য সমন্বয়'], ans: 2, exp: 'ঋতু অনুযায়ী শস্য উৎপাদন অর্থাৎ শস্যের বণ্টন ও বিন্যাসকে শস্যবর্ষ বা শস্য সময়সূচি (Crop Calendar) বলে।'},
+      {q: 'তরমুজ, শসা, উচ্ছে, বাদাম প্রভৃতি গ্রীষ্মকালীন শস্য কী নামে পরিচিত?', opts: ['খারিফ শস্য', 'রবি শস্য', 'অর্থকরী শস্য', 'জায়েদ শস্য'], ans: 3, exp: 'মার্চ-এপ্রিল থেকে জুন মাস পর্যন্ত তরমুজ, শসা, উচ্ছে, ডাল ইত্যাদি গ্রীষ্মকালীন শস্যের চাষ করা হয়, যা জায়েদ শস্য নামে পরিচিত।'},
+      {q: 'জমিতে উৎপাদন বৃদ্ধি ও উর্বরতা বজায় রাখার জন্য ধারাবাহিকভাবে পরপর বিভিন্ন শস্যের পর্যায়ক্রমিক চাষকে কী বলে?', opts: ['মিশ্র কৃষি', 'শস্যাবর্তন বা চক্রকৃষি', 'প্রগাঢ় কৃষি', 'উদ্যান কৃষি'], ans: 1, exp: 'জমির উর্বরতা বজায় রাখার জন্য কোনো জমিতে ধারাবাহিকভাবে পরপর বিভিন্ন শস্যের পর্যায়ক্রমিক চাষকে শস্যাবর্তন বা চক্রকৃষি (Crop Rotation) বলে।'},
+      {q: 'ভারতে জুন-জুলাই মাস থেকে সেপ্টেম্বর-অক্টোবর মাস পর্যন্ত উৎপাদিত শস্যকে কী বলে?', opts: ['রবি শস্য', 'খারিফ শস্য', 'জায়েদ শস্য', 'রোপণ শস্য'], ans: 1, exp: 'জুন-জুলাই মাস থেকে সেপ্টেম্বর-অক্টোবর মাস পর্যন্ত খারিফ শস্যের (যেমন- ধান, পাট, ভুট্টা, তুলো) চাষ হয়।'},
+      {q: 'একই জমিতে সারিবদ্ধভাবে বিভিন্ন ফসলের একসঙ্গে চাষ করাকে কী বলে?', opts: ['শস্যাবর্তন', 'মিশ্র কৃষি', 'আন্তঃকৃষি বা ইনটারক্রপিং', 'শূন্যগর্ভ কৃষি'], ans: 2, exp: 'বহু-ফসলি কৃষিব্যবস্থায় প্রগাঢ় পদ্ধতিতে জমিতে একইসঙ্গে সারিবদ্ধভাবে বিভিন্ন ফসলের চাষ করাকে আন্তঃকৃষি বা ইনটারক্রপিং বলে।'},
+      {q: 'শস্যাবর্তনের \'চারভাগ জমি পদ্ধতিতে\' (Four-field system) পর্যায়ক্রমে কোন শস্যগুলি উৎপাদন করা হয়?', opts: ['ধান, পাট, গম, ভুট্টা', 'গম, টারনিপ, বার্লি ও ক্লোভার', 'আলু, রাই, ওট, তুলা', 'বাজরা, ডাল, সরিষা, পাট'], ans: 1, exp: 'চারভাগ জমি পদ্ধতিতে পর্যায়ক্রমে পশুখাদ্য শস্য ও চারণযোগ্য শস্য-সহ চারপ্রকার শস্য (গম, টারনিপ, বার্লি ও ক্লোভার) উৎপাদন করা হয়।'},
+      {q: 'ধান চাষের পর কোন শস্য চাষ করলে জমিতে প্রাকৃতিকভাবে নাইট্রোজেনের পরিমাণ বৃদ্ধি পায়?', opts: ['গম', 'আলু', 'মটর-জাতীয় বা শুঁটি-জাতীয় শস্য', 'ভুট্টা'], ans: 2, exp: 'ধান চাষের পর জমিতে মটর বা শুঁটি-জাতীয় শস্য চাষ করলে জমিতে নাইট্রোজেনের পরিমাণ বৃদ্ধি পায়।'},
+      {q: 'শস্যাবর্তনের \'তিনভাগ জমি পদ্ধতিতে\' (Three-field system) প্রতি তিন বছরে কত অংশ জমি পতিত বা চাষহীন রাখা হয়?', opts: ['অর্ধেক', 'এক-তৃতীয়াংশ', 'এক-চতুর্থাংশ', 'কোনো জমিই পতিত রাখা হয় না'], ans: 1, exp: 'এই তিনটি জমিকে এমনভাবে আবর্তন করানো হয় যে, প্রতি তিনবছরে একটি অংশ বা এক-তৃতীয়াংশ পতিত অবস্থায় থেকে যায়।'},
+      {q: 'ভারতের কোন রাজ্যে বাজরার সাথে ডাল, তিল-আলু বা সরিষার শস্যাবর্তন দেখা যায়?', opts: ['পশ্চিমবঙ্গ', 'কেরল ও তামিলনাড়ু', 'রাজস্থান, পাঞ্জাব, হরিয়ানা', 'অসম ও ত্রিপুরা'], ans: 2, exp: 'রাজস্থান, পাঞ্জাব, হরিয়ানা ও গুজরাত অঞ্চলে বাজরা ডাল, তিল-আলু সরিষা প্রভৃতির সাথে বাজরাকে আবর্তন করানো হয়।'},
+      {q: 'জমিতে একই শস্য বারংবার চাষ না করে পর্যায়ক্রমে চাষ করলে কোন সুবিধাটি হয়?', opts: ['সেচের জলের বেশি প্রয়োজন হয়', 'আগাছা হ্রাস ও রোগ-পোকার উপদ্রব হ্রাস পায়', 'উৎপাদন কমে যায়', 'মাটির লবণতা বাড়ে'], ans: 1, exp: 'একই জমিতে পর্যায়ক্রমে চাষ করা হয় বলে জমি সবসময় আগাছামুক্ত থাকে এবং জমিতে রোগ-পোকার উপদ্রব কম থাকে।'},
+      {q: 'শস্যাবর্তনের \'দ্বি-ক্ষেত্র ব্যবস্থায়\' (Two-field system) বছরে কত অংশ জমিতে চাষ করা হয়?', opts: ['সম্পূর্ণ জমিতে', 'অর্ধেক জমিতে', 'এক-তৃতীয়াংশ জমিতে', 'এক-চতুর্থাংশ জমিতে'], ans: 1, exp: 'শস্যাবর্তনের দ্বি-ক্ষেত্র ব্যবস্থায় বছরে অর্ধেক জমিতে চাষ করা হয় এবং বাকি অর্ধেক জমিকে অকর্ষিত অবস্থায় ফেলে রাখা হয়।'},
+      {q: 'নিচের কোনটি একটি রবি শস্যের উদাহরণ?', opts: ['ধান', 'পাট', 'গম ও আলু', 'তুলো'], ans: 2, exp: 'অক্টোবর-নভেম্বর থেকে মার্চ-এপ্রিল মাস পর্যন্ত রবিশস্যের (যেমন- গম, সরষে, আলু, ফুলকপি) চাষ হয়।'},
+      {q: 'শস্যাবর্তনের একটি অন্যতম উদ্দেশ্য কী?', opts: ['কেবলমাত্র পশুখাদ্য উৎপাদন', 'জমির উর্বরতা ও উৎপাদন বৃদ্ধি করা', 'শুধুমাত্র অর্থকরী ফসলের উৎপাদন', 'পতিত জমির পরিমাণ বাড়ানো'], ans: 1, exp: 'জমির উর্বরতা যাতে বজায় থাকে সেদিকে লক্ষ রেখে কৃষিতে শস্যাবর্তন পদ্ধতির প্রয়োগ করা হয় এবং উৎপাদন বৃদ্ধি করাও এর অন্যতম লক্ষ্য।'},
+      {q: 'নিচের কোনটি খারিফ শস্যের উদাহরণ?', opts: ['গম', 'বাঁধাকপি', 'ধান ও পাট', 'সরষে'], ans: 2, exp: 'জুন-জুলাই থেকে সেপ্টেম্বর-অক্টোবর মাস পর্যন্ত খারিফ শস্যের (যেমন- ধান, পাট, ভুট্টা, তুলো, আখ) চাষ হয়।'},
+      {q: 'ভারতের মতো বৈচিত্র্যপূর্ণ জলবায়ু অঞ্চলে শস্যবর্ষ বা শস্য সময়সূচি কিসের ওপর নির্ভরশীল?', opts: ['শুধুমাত্র সরকারি নির্দেশিকার ওপর', 'স্থান ও কালভেদে জলবায়ুর পরিবর্তনের ওপর', 'শুধুমাত্র মাটির প্রকৃতির ওপর', 'বৈদেশিক বাণিজ্যের ওপর'], ans: 1, exp: 'ভারতের মতো বৈচিত্র্যপূর্ণ জলবায়ু ও ভূপ্রকৃতির তারতম্য অনুযায়ী স্থান ও কালভেদে শস্যবর্ষ বা শস্য সময়সূচি পরিবর্তিত হয়।'}
+    ]
+  },
+  2: {
+    name: 'Set 2',
+    icon: '🌿',
+    topic: 'শস্য সমন্বয় ও শস্য প্রগাঢ়তা',
+    questions: [
+      {q: 'কোনো অঞ্চলের মোট কর্ষিত জমির সাপেক্ষে এক বা একাধিক শস্যের শতকরা অংশীদারিত্বের গাণিতিক বিন্যাসকে কী বলে?', opts: ['শস্যাবর্তন', 'শস্য প্রগাঢ়তা', 'শস্য সমন্বয় (Crop Combination)', 'আন্তঃকৃষি'], ans: 2, exp: 'মোট কর্ষিত জমির সাপেক্ষে এক বা একাধিক শস্যের শতকরা অংশীদারিত্ব অনুযায়ী শস্যসমূহকে নির্দিষ্ট পদ্ধতিতে দলভুক্ত করাকে শস্য সমন্বয় বা Crop combination বলে।'},
+      {q: 'গাণিতিক পদ্ধতিতে শস্য সমন্বয় (Crop Combination) নির্ণয়ের ধারণা প্রথম কে দেন?', opts: ['হুইটলসে', 'জে সি উইভার', 'এল ডি স্ট্যাম্প', 'রফিউল্লাহ'], ans: 1, exp: 'জে সি উইভার-এর মতে শস্য সমন্বয় বলতে বোঝায় এমন এক পদ্ধতিকে, যার দ্বারা কোনো একটি জমিতে একটি শস্য কতটুকু স্থান দখল করে আছে তার শতাংশ নির্ণয় করে ভূমির শ্রেণিবিভাগ করা হয়।'},
+      {q: 'কোনো নির্দিষ্ট কৃষিজমিতে বছরে একাধিকবার বিভিন্ন ফসল ফলিয়ে চাষের তীব্রতা বৃদ্ধি করাকে কী বলে?', opts: ['শস্য প্রগাঢ়তা বা শস্য নিবিড়তা (Crop Intensity)', 'শস্যাবর্তন', 'শস্য সমন্বয়', 'মিশ্র কৃষি'], ans: 0, exp: 'একই জমিতে একাধিকবার বিভিন্ন ফসল ফলিয়ে বারে বারে শস্য চাষের ফলে চাষের তীব্রতা বৃদ্ধি পাওয়াকে শস্য প্রগাঢ়তা বা শস্য নিবিড়তা বলে।'},
+      {q: 'শস্য নিবিড়তা বা প্রগাঢ়তা নির্ণয়ের সঠিক সূত্রটি কী?', opts: ['(প্রকৃত চাষের জমি / মোট চাষের জমি) × ১০০', '(মোট চাষের জমি / প্রকৃত চাষের জমি) × ১০০', '(মোট চাষের জমি + প্রকৃত চাষের জমি) / ১০০', '(প্রকৃত চাষের জমি / পতিত জমি) × ১০০'], ans: 1, exp: 'শস্য নিবিড়তা = (মোট চাষের জমি / প্রকৃত চাষের জমি) × 100।'},
+      {q: 'একজন কৃষকের প্রকৃত চাষের জমি ১০০ বিঘা। এর মধ্যে সে ৫০ বিঘা এক-ফসলি, ৫০ বিঘা দো-ফসলি এবং ১০ বিঘা তিন-ফসলি চাষ করলে, তার শস্য নিবিড়তা কত হবে?', opts: ['১০০%', '১৫০%', '১৬০%', '২০০%'], ans: 2, exp: 'মোট চাষের জমি = (৫০×১) + (৪০×২) + (১০×৩) = ১৬০ বিঘা। অতএব শস্য নিবিড়তা = (১৬০ / ১০০) × ১০০ = ১৬০%।'},
+      {q: 'শস্য সমন্বয় নির্ণয়ের সবচেয়ে নির্ভরযোগ্য ও সঠিক পদ্ধতি কোনটি?', opts: ['ঐচ্ছিক বিকল্প পদ্ধতি', 'রাশিবিজ্ঞান নির্ভর পদ্ধতি (Standard Deviation)', 'প্রথাগত অনুমান পদ্ধতি', 'শুধুমাত্র প্রথম শস্য বিবেচনাকরণ পদ্ধতি'], ans: 1, exp: 'উৎপাদিত সব শস্যের শতকরা অংশ অনুযায়ী রাশিবিজ্ঞানের যৌগিক গড় ও প্রমাণ বিচ্যুতি পরিমাপ দ্বারা শস্য সমন্বয় দলভুক্ত করা হয়, যা অধিকতর সঠিক ও নির্ভরযোগ্য।'},
+      {q: 'ইন্ডিয়ান কাউন্সিল ফর এগ্রিকালচার রিসার্চ (ICAR) প্রদত্ত শস্য সমন্বয় অনুযায়ী ভারতের \'তুলো অঞ্চল\'-এর অন্তর্গত রাজ্য কোনটি?', opts: ['পশ্চিমবঙ্গ ও বিহার', 'অসম ও মেঘালয়', 'মহারাষ্ট্র ও গুজরাত', 'পাঞ্জাব ও হরিয়ানা'], ans: 2, exp: 'মহারাষ্ট্র, গুজরাত, কর্ণাটক ও তামিলনাড়ু প্রভৃতি রাজ্যের ডেকান ট্র্যাপ অঞ্চলের প্রধান শস্য হল তুলো, যা তুলো অঞ্চলের অন্তর্গত।'},
+      {q: 'ICAR প্রদত্ত শস্য সমন্বয় অনুযায়ী পশ্চিম রাজস্থান ও উত্তর গুজরাতের প্রধান শস্য বা শস্য অঞ্চল কোনটি?', opts: ['মিলেট ও তৈলবীজ অঞ্চল', 'ভুট্টা অঞ্চল', 'ধান-পাট অঞ্চল', 'ফল ও শাকসবজি অঞ্চল'], ans: 1, exp: 'পশ্চিম রাজস্থান ও উত্তর গুজরাত অঞ্চলের প্রধান শস্য হল ভুট্টা, যা \'ভুট্টা অঞ্চল\' হিসেবে চিহ্নিত।'},
+      {q: 'ভারতের কোন রাজ্যগুলি মিলেট ও তৈলবীজ শস্য সমন্বয় অঞ্চলের অন্তর্গত?', opts: ['পশ্চিমবঙ্গ ও ওড়িশা', 'কাশ্মীর উপত্যকা ও উত্তরাখণ্ড', 'কর্ণাটক মালভূমি, দক্ষিণ অন্ধ্রপ্রদেশ ও তামিলনাড়ুর অংশ', 'পাঞ্জাব ও হরিয়ানা'], ans: 2, exp: 'কর্ণাটক মালভূমি, তামিলনাড়ুর অংশ-বিশেষ, দক্ষিণ অন্ধ্রপ্রদেশ ও পূর্ব কেরলের প্রধান শস্য হল মিলেট ও তৈলবীজ।'},
+      {q: 'শস্য প্রগাঢ়তা বা শস্য নিবিড়তা সবচেয়ে বেশি দেখা যায় কোন কৃষি পদ্ধতিতে?', opts: ['নিবিড় কৃষি প্রণালীতে', 'ব্যাপক কৃষিতে', 'বাগিচা কৃষিতে', 'আদিম কৃষিতে'], ans: 0, exp: 'নিবিড় কৃষি প্রণালীতে শস্য প্রগাঢ়তা বেশি হয়, কারণ একই জমিকে এক কৃষিবর্ষে একাধিকবার ফসল উৎপাদনের জন্য ব্যবহার করা হয়।'},
+      {q: '"কোনো নির্দিষ্ট অঞ্চলে বিভিন্ন ধরনের যেসব শস্য উৎপাদিত হয় তার ভিত্তিতে অঞ্চলবিশেষে যে শস্য বিন্যাস গড়ে ওঠে তাকে বলা হয় শস্য সমন্বয়" — এই সংজ্ঞাটি কে দিয়েছেন?', opts: ['জে সি উইভার', 'হুইটলসে (Whittlesey)', 'এল ডি স্ট্যাম্প', 'রফিউল্লাহ'], ans: 1, exp: 'আমেরিকা যুক্তরাষ্ট্রের ভূগোলবিদ হুইটলসে (Whittlesey)-এর মতে অঞ্চলবিশেষে উৎপাদিত শস্যের ভিত্তিতে গড়ে ওঠা শস্য বিন্যাসই হল শস্য সমন্বয়।'},
+      {q: 'শস্য প্রগাঢ়তার প্রধান উদ্দেশ্য কী?', opts: ['জমির উর্বরতা কমানো', 'একই জমি থেকে বছরে একাধিকবার ফসল উৎপাদন করে মোট উৎপাদন বৃদ্ধি', 'কেবলমাত্র এক-ফসলি চাষ করা', 'বনসৃজন করা'], ans: 1, exp: 'একই জমিতে অনেকবার ফসল ফলিয়ে কৃষক শস্য বৈচিত্র্য আনে এবং বারে বারে শস্য চাষের ফলে চাষের তীব্রতা ও মোট উৎপাদন বৃদ্ধি পায়।'},
+      {q: 'ভারতে সবথেকে বেশি শস্য প্রগাঢ়তা লক্ষ করা যায় কোন রাজ্যে?', opts: ['রাজস্থান', 'উত্তরপ্রদেশ', 'পাঞ্জাব', 'পশ্চিমবঙ্গ'], ans: 2, exp: 'উন্নত সেচ ব্যবস্থা ও কৃষির বাণিজ্যিকীকরণের কারণে ভারতে সবথেকে বেশি শস্য প্রগাঢ়তা লক্ষ করা যায় পাঞ্জাবে।'},
+      {q: 'তিনটি মাত্র শস্য যে জমিতে চাষ করা হয় তার আদর্শ শস্য সমন্বয় বা তাত্ত্বিক মান কত শতাংশ ধরা হয়?', opts: ['১০০%', '৫০%', '২৫%', '৩৩.৩%'], ans: 3, exp: 'তিনটি মাত্র শস্য চাষ হলে মোট ১০০%-কে ৩ দিয়ে ভাগ করলে প্রতিটি শস্যের আদর্শ শস্য সমন্বয়ের মান ৩৩.৩% হয়।'},
+      {q: 'ভারতের উত্তর-পূর্বাংশের রাজ্যগুলি (যেমন- পশ্চিমবঙ্গ, অসম) প্রধানত কোন শস্য সমন্বয় অঞ্চলের অন্তর্গত?', opts: ['গম ও ইক্ষু অঞ্চল', 'ধান-পাট-চা অঞ্চল', 'তুলো অঞ্চল', 'মিলেট ও তৈলবীজ অঞ্চল'], ans: 1, exp: 'পশ্চিমবঙ্গ, পূর্ব বিহার, ওডিশা, ঝাড়খণ্ড ও উত্তর-পূর্ব ভারতের রাজ্যগুলির প্রধান শস্য হল ধান, পাট ও চা।'}
+    ]
+  },
+  3: {
+    name: 'Set 3',
+    icon: '🌰',
+    topic: 'ভারতের অর্থকরী ফসল: পাট ও তুলো',
+    questions: [
+      {q: 'ভারতের কোন তন্তুজ অর্থকরী ফসলকে \'সোনালি তন্তু\' (Golden fibre) আখ্যা দেওয়া হয়?', opts: ['তুলো', 'পাট', 'রেশম', 'শণ'], ans: 1, exp: 'পাট ভারতের গুরুত্বপূর্ণ তন্তু-জাতীয় অর্থকরী ফসল, যাকে \'সোনালি তন্তু\' নামে আখ্যা দেওয়া হয়।'},
+      {q: 'তুলো চাষের জন্য কোন মৃত্তিকা সবচেয়ে বেশি আদর্শ ও উপযোগী?', opts: ['পলি মৃত্তিকা', 'ল্যাটেরাইট মৃত্তিকা', 'কৃষ্ণমৃত্তিকা বা চারনোজেম (Chernozem)', 'লাল দোআঁশ মৃত্তিকা'], ans: 2, exp: 'কৃষ্ণমৃত্তিকা বা চারনোজেম (Chernozem) জাতীয় মাটি তুলো চাষের পক্ষে আদর্শ।'},
+      {q: 'দাক্ষিণাত্যের লাভাজাত কালো মাটিতে তুলো চাষ খুব ভালো হয় বলে এই মাটিকে কী বলা হয়?', opts: ['কৃষ্ণ তুলো মৃত্তিকা (Black Cotton Soil)', 'খাদার', 'ভাঙর', 'রেগুর'], ans: 0, exp: 'ভারতের দাক্ষিণাত্যের লাভাজাত কৃষ্ণমৃত্তিকায় তুলোর চাষ ভালো হয় বলে একে কৃষ্ণ তুলো মৃত্তিকা (Black Cotton Soil) বলে।'},
+      {q: 'তুলো গাছের গুটিগুলি নষ্ট হওয়া রোধ করতে বছরে অন্তত কতগুলি তুহিনমুক্ত দিন থাকা প্রয়োজন?', opts: ['১০০ টি', '১৫০ টি', '২০০ টি', '৩০০ টি'], ans: 2, exp: 'তুলো গাছের জন্য অন্তত ২০০ টি তুহিনমুক্ত দিনের প্রয়োজন, তা না হলে তুলো গাছ ও গুটিগুলি নষ্ট হয়ে যায়।'},
+      {q: 'পাট চাষের জন্য বার্ষিক গড় বৃষ্টিপাত কী পরিমাণ হওয়া প্রয়োজন?', opts: ['৫০-১০০ সেমি', '১০০-১৫০ সেমি', '১৫০-২০০ সেমি', '২৫০-৩০০ সেমি'], ans: 2, exp: 'পাট চাষের জন্য বছরে ১৫০-২০০ সেমি প্রচুর বৃষ্টিপাত একান্ত প্রয়োজন।'},
+      {q: 'বিগত কয়েক বছরের (২০১৪-২৪) উৎপাদন অনুযায়ী ভারতে তুলো উৎপাদনে কোন রাজ্য প্রথম স্থান অধিকার করেছে?', opts: ['মহারাষ্ট্র', 'তেলেঙ্গানা', 'গুজরাত', 'রাজস্থান'], ans: 2, exp: 'বিগত ১০ বছরের তুলো উৎপাদন অনুসারে গুজরাত প্রথম স্থান অধিকার করে, যার উৎপাদন প্রায় ৯০.৫৬৬ লক্ষ বেল।'},
+      {q: 'ভারতের \'কটন সিটি\' বা \'তুলো নগরী\' কাকে বলা হয়?', opts: ['মহারাষ্ট্রের নাগপুর-কে', 'গুজরাতের সুরাট-কে', 'কর্ণাটকের রায়চুর-কে', 'রাজস্থানের যোধপুর-কে'], ans: 2, exp: 'কর্ণাটকের রায়চুর তুলো উৎপাদনে বিখ্যাত এবং এটি কটন সিটি বা তুলো নগরী নামে পরিচিত।'},
+      {q: 'পাঞ্জাবের কোন জেলাকে তুলো উৎপাদনের জন্য \'Land of White Gold\' বা সাদা সোনার দেশ বলা হয়?', opts: ['ভাতিন্দা', 'মানসা', 'ফাজিলকা', 'মুক্তসার'], ans: 1, exp: 'পাঞ্জাবের মানসা জেলা তুলো উৎপাদনের জন্য \'Land of White Gold\' নামে পরিচিত।'},
+      {q: 'তুলো চাষের জন্য বছরে কী পরিমাণ বৃষ্টিপাতের প্রয়োজন হয়?', opts: ['২৫-৫০ সেমি', '৬৫-১০০ সেমি', '১০০-১৫০ সেমি', '২০০ সেমির বেশি'], ans: 1, exp: 'তুলো চাষের জন্য বছরে ৬৫-১০০ সেমি বৃষ্টিপাত প্রয়োজন, এবং বৃষ্টিপাত একটানা না হয়ে মাঝে মাঝে হলে ভালো হয়।'},
+      {q: '\'সোনালি\', \'সবুজ সোনা\', \'শ্যামলি\', \'সৌরভ\' - এগুলি কোন ফসলের উন্নত জাতের বীজ?', opts: ['তুলো', 'আখ', 'চা', 'পাট'], ans: 3, exp: 'পাট চাষে ব্যবহৃত উন্নত বীজগুলি হল- সোনালি, সবুজ সোনা, শ্যামলি, বলদেভ, তরুন, ইরা, সৌরভ, সুধাংশু।'},
+      {q: 'তুলো প্রধানত কোন জলবায়ু অঞ্চলের ফসল?', opts: ['তুন্দ্রা জলবায়ু', 'নিরক্ষীয় জলবায়ু', 'ক্রান্তীয় ও উপক্রান্তীয় জলবায়ু', 'ভূমধ্যসাগরীয় জলবায়ু'], ans: 2, exp: 'তুলো ক্রান্তীয় ও উপক্রান্তীয় জলবায়ু অঞ্চলের ফসল এবং এর জন্য গড়ে ২০° সে থেকে ২৫° সে উষ্ঞতা প্রয়োজন।'},
+      {q: 'ভারতে উৎপাদিত বীজ \'RCH 134BT\', \'MRC 6301BT\' কোন ফসল চাষের সাথে সম্পর্কিত?', opts: ['পাট', 'তুলো', 'আখ', 'গম'], ans: 1, exp: 'তুলো চাষে ব্যবহৃত উন্নত বীজগুলি হল RCH 134BT, RCH137BT, MRC 6301BT ইত্যাদি।'},
+      {q: 'সামুদ্রিক আবহাওয়া কোন ফসল গাছের বৃদ্ধিতে বিশেষভাবে সাহায্য করে?', opts: ['পাট', 'গম', 'তুলো', 'আখ'], ans: 2, exp: 'সামুদ্রিক আবহাওয়া তুলো গাছের বৃদ্ধিতে সাহায্য করে। সেজন্য দ্বীপ বা সমুদ্র-সন্নিহিত অঞ্চলে তুলোর চাষ ভালো হয়।'},
+      {q: 'ভারতের পাট চাষ প্রধানত কোন অঞ্চলে কেন্দ্রীভূত?', opts: ['পশ্চিম ভারতে', 'পূর্ব ভারতে', 'দক্ষিণ ভারতে', 'উত্তর-পশ্চিম ভারতে'], ans: 1, exp: 'ভারতে পাট চাষ মূলত পূর্ব ভারতে (গঙ্গা-ব্রহ্মপুত্র সমভূমি) কেন্দ্রীভূত।'},
+      {q: 'ভারতের মহারাষ্ট্র, গুজরাত ও তেলেঙ্গানা— এই তিন রাজ্য মিলে মোট তুলো উৎপাদনের প্রায় কত শতাংশ উৎপাদন করে?', opts: ['৩০.২০ শতাংশ', '৫০.০০ শতাংশ', '৬৮.৪৪ শতাংশ', '৯০.০০ শতাংশ'], ans: 2, exp: 'এই তিন রাজ্য (গুজরাত, মহারাষ্ট্র ও তেলেঙ্গানা) ভারতের মোট তুলো উৎপাদনের প্রায় ৬৮.৪৪ শতাংশ উৎপন্ন করে।'}
+    ]
+  },
+  4: {
+    name: 'Set 4',
+    icon: '🍵',
+    topic: 'অর্থকরী ফসল: আখ ও চা',
+    questions: [
+      {q: 'আখ উৎপাদনে শ্রেষ্ঠ হওয়ার কারণে ভারতের কোন রাজ্যকে \'চিনির পাত্র\' (Sugar bowl of India) বলা হয়?', opts: ['মহারাষ্ট্র', 'কর্ণাটক', 'উত্তরপ্রদেশ', 'তামিলনাড়ু'], ans: 2, exp: 'আখ উৎপাদনে উত্তরপ্রদেশ ভারতে প্রথম স্থান অধিকার করে, একে ভারতের চিনির পাত্র (Sugar bowl) বলা হয়।'},
+      {q: 'কর্ণাটকের কোন জেলা \'কর্ণাটকের চিনির পাত্র\' (Sugar bowl) নামে পরিচিত?', opts: ['মান্ডিয়া', 'বেলগাঁও', 'বিজাপুর', 'মহীশূর'], ans: 1, exp: 'বেলগাঁও জেলাকে কর্ণাটকের চিনির পাত্র বা Sugar bowl বলা হয়।'},
+      {q: 'চা উৎপাদনে ভারতের কোন রাজ্য প্রথম স্থান অধিকার করে?', opts: ['পশ্চিমবঙ্গ', 'তামিলনাড়ু', 'কেরল', 'অসম'], ans: 3, exp: 'চা উৎপাদক রাজ্যগুলির মধ্যে অসম ভারতে প্রথম এবং পশ্চিমবঙ্গ দ্বিতীয় স্থান অধিকার করে।'},
+      {q: 'দক্ষিণ ভারতের কোন পাহাড়ের চা তার অনন্য স্বাদের জন্য \'Blue Mountain\' চা নামে বিখ্যাত?', opts: ['আন্নামালাই পর্বত', 'নীলগিরি পর্বত', 'পশ্চিমঘাট পর্বত', 'পালনি পর্বত'], ans: 1, exp: 'তামিলনাড়ুর বৃহত্তম চা চাষের এলাকা নীলগিরি পার্বত্য অঞ্চলের চা \'Blue Mountain\' চা নামে পরিচিত।'},
+      {q: 'ভারতের কেরালা রাজ্যের কোন জেলা বিখ্যাত চা বাগানের জন্য সুপরিচিত?', opts: ['ইদুক্কি জেলা (মুন্নার)', 'পালঘাট', 'কোল্লাম', 'তিরুবনন্তপুরম'], ans: 0, exp: 'কেরালার ইদুক্কি জেলার পশ্চিমঘাট পর্বতের উর্বর মাটিতে চা চাষ হয়, এবং এই জেলার মুন্নার অঞ্চল চা বাগানের জন্য বিখ্যাত।'},
+      {q: '"দুটি পাতা ও একটি কুঁড়ি" (Two Leaves and a Bud) তোলার কৌশল কোন ফসল চাষের সাথে সম্পর্কিত?', opts: ['কফি', 'তুলো', 'চা', 'রবার'], ans: 2, exp: 'চা চাষে পাতা তোলার সময় \'দুটি পাতা ও একটি কুঁড়ি\' ঠিকমতো বাছতে হয়, তাই নিপুণ নারীশ্রমিকের প্রয়োজন হয়।'},
+      {q: 'চা চাষের জন্য কী ধরনের মৃত্তিকা সবচেয়ে উপযোগী?', opts: ['কালো মাটি', 'উর্বর লোহাযুক্ত দোআঁশ মাটি', 'পলি মাটি', 'বালুকাময় মাটি'], ans: 1, exp: 'উর্বর লোহাযুক্ত দোআঁশ মাটিই চা উৎপাদনে বিশেষ উপযোগী।'},
+      {q: 'চা বাগিচায় জলনিকাশের সুবিধার জন্য জমির প্রকৃতি কেমন হওয়া বাঞ্ছনীয়?', opts: ['সমতল ভূমি', 'নিচু জলাভূমি', 'পাহাড়ের ঢালু জমি', 'বালুকাময় মরুভূমি'], ans: 2, exp: 'চা বাগিচায় জলনিকাশের ভালো ব্যবস্থা থাকা প্রয়োজন, তাই পাহাড়ের ঢালে ধাপ কেটে চায়ের চাষ করা হয় যাতে জল সহজেই ঢাল বেয়ে নেমে যেতে পারে।'},
+      {q: 'ভারতে মোট চা উৎপাদনের প্রায় ৮২ শতাংশ কোন দুটি রাজ্য থেকে আসে?', opts: ['তামিলনাড়ু ও কেরালা', 'অসম এবং পশ্চিমবঙ্গ', 'কর্ণাটক ও তামিলনাড়ু', 'অসম ও মেঘালয়'], ans: 1, exp: 'উৎপাদক রাজ্যগুলির মধ্যে অসম প্রথম এবং পশ্চিমবঙ্গ দ্বিতীয়। মোট চা উৎপাদনের ৮২ শতাংশ চা এই দুই রাজ্য থেকে আসে।'},
+      {q: 'চা চাষের জন্য বছরে গড় বৃষ্টিপাতের পরিমাণ কত হওয়া প্রয়োজন?', opts: ['৫০ থেকে ১০০ সেমি', '১০০ থেকে ১৫০ সেমি', '১৫০ থেকে ২৫০ সেমি', '২৫০ থেকে ৪০০ সেমি'], ans: 2, exp: 'চা চাষের জন্য প্রচুর বৃষ্টিপাতের প্রয়োজন। বৃষ্টিপাতের পরিমাণ বছরে ১৫০ থেকে ২৫০ সেমি হলে চা চাষ ভালো হয়।'},
+      {q: 'আখের একটি প্রধান রোগ, যা আখ চাষের একটি বড় সমস্যা, তার নাম কী?', opts: ['আখের মরিচা রোগ', 'আখের লাল-পচা রোগ (Red Rot)', 'আখের উইল্ট রোগ', 'আখের ব্লাইট রোগ'], ans: 1, exp: 'আখ চাষের একটি প্রধান সমস্যা ও আখের প্রধান শত্রু হলো আখের লাল-পচা রোগ।'},
+      {q: 'কোডাগু ভারতের কোন রাজ্যের সর্বাধিক চা উৎপাদক জেলা?', opts: ['তামিলনাড়ু', 'কেরালা', 'কর্ণাটক', 'অসম'], ans: 2, exp: 'কোডাগু হলো কর্ণাটকের সর্বাধিক চা উৎপাদক জেলা এবং এখানকার চায়ের বাগানগুলি কফি গাছ দ্বারা বেষ্টিত।'},
+      {q: '২০২২-২৩ সালের পরিসংখ্যান অনুযায়ী ভারতে আখ উৎপাদনে কোন রাজ্য প্রথম স্থানে রয়েছে?', opts: ['মহারাষ্ট্র', 'কর্ণাটক', 'তামিলনাড়ু', 'উত্তরপ্রদেশ'], ans: 3, exp: '২০২২-২৩ অর্থবর্ষে আখ উৎপাদনে উত্তরপ্রদেশ প্রথম স্থান অধিকার করে।'},
+      {q: 'ভারতে উৎপাদিত চায়ের মধ্যে কোন শ্রেণির চায়ের উৎপাদন সর্বাধিক (৯০ শতাংশের অধিক)?', opts: ['গ্রিন টি', 'হোয়াইট টি', 'CTC চা', 'ওলং টি'], ans: 2, exp: 'ভারতে CTC (Crush, Tear, Curl) চা-এর উৎপাদন মোট উৎপাদনের ৯০ শতাংশের অধিক।'},
+      {q: 'CoJ 85, Co 118, CoJ 64 — এগুলি কোন ফসলের উন্নত জাতের বীজ?', opts: ['তুলো', 'আখ', 'পাট', 'গম'], ans: 1, exp: 'প্রারম্ভিক ঋতুতে আখ চাষের জন্য ব্যবহৃত বিভিন্ন ধরনের উন্নত বীজগুলি হলো CoJ 85, Co 118, CoJ 64 ইত্যাদি।'}
+    ]
+  },
+  5: {
+    name: 'Set 5',
+    icon: '🚜',
+    topic: 'ভারতের কৃষি বিপ্লবসমূহ',
+    questions: [
+      {q: '\'অপারেশন ফ্লাড\' (Operation Flood) কর্মসূচিটি ভারতে কোন উৎপাদনের সাথে ঘনিষ্ঠভাবে জড়িত?', opts: ['বন্যা নিয়ন্ত্রণ', 'দুগ্ধ উৎপাদন (দুধ) বা শ্বেত বিপ্লব', 'মৎস্য উৎপাদন', 'পানীয় জল সরবরাহ'], ans: 1, exp: 'ভারত সরকারের \'অপারেশন ফ্লাড\' কর্মসূচিটি দুগ্ধ উৎপাদনের সাথে জড়িত, যা শ্বেত বিপ্লবের মূল ভিত্তি।'},
+      {q: 'ভারতে \'শ্বেত বিপ্লবের জনক\' বা \'ভারতের দুগ্ধ মানব\' কাকে বলা হয়?', opts: ['ড. এম এস স্বামীনাথন', 'নরম্যান বোরলগ', 'ড. ভার্গিস ক্যুরিয়েন', 'অরূপ কৃষ্ণান'], ans: 2, exp: 'দুগ্ধ উৎপাদন বৃদ্ধিতে অভূতপূর্ব সাফল্যের জন্য ড. ভার্গিস ক্যুরিয়েনকে ভারতের \'শ্বেত বিপ্লবের জনক\' বা \'দুগ্ধ মানব\' বলা হয়।'},
+      {q: 'ভারতে সবুজ বিপ্লবের সূচনা বা প্রথম সূত্রপাত মূলত কোন শস্য উৎপাদনকে কেন্দ্র করে হয়েছিল?', opts: ['ডাল', 'তৈলবীজ', 'গম (ও ধান)', 'জোয়ার-বাজরা'], ans: 2, exp: 'ভারতে সবুজ বিপ্লবের সূচনা মূলত গম (এবং ধান) শস্য উৎপাদন বৃদ্ধির মধ্য দিয়ে হয়েছিল।'},
+      {q: 'ভারতে \'নীল বিপ্লব\' (Blue Revolution) কথাটি কোন দ্রব্য উৎপাদনের সাথে যুক্ত?', opts: ['নীল চাষ', 'সামুদ্রিক মৎস্য বা মাছ উৎপাদন', 'হাঁস-মুরগির ডিম উৎপাদন', 'জল সংরক্ষণ'], ans: 1, exp: 'নীল বিপ্লব মূলত মাছ (মৎস্য) ও সামুদ্রিক প্রাণী উৎপাদন বৃদ্ধির সঙ্গে সম্পর্কিত।'},
+      {q: 'ভারতে \'হলুদ বা পীত বিপ্লব\' (Yellow Revolution) কথাটি কোন দ্রব্য উৎপাদনের সঙ্গে সম্পর্কিত?', opts: ['পেঁয়াজ উৎপাদন', 'দুধ উৎপাদন', 'তৈলবীজ উৎপাদন', 'মাংস উৎপাদন'], ans: 2, exp: 'হলুদ বিপ্লব বা পীত বিপ্লব কথাটি তৈলবীজ উৎপাদন বৃদ্ধির সাথে সম্পর্কিত।'},
+      {q: '\'গোলাপি বিপ্লব\' (Pink Revolution) কোন দ্রব্য উৎপাদনের সঙ্গে জড়িত?', opts: ['ফল উৎপাদন', 'সার উৎপাদন', 'চিংড়ি (ও পেঁয়াজ) উৎপাদন', 'মাংস উৎপাদন'], ans: 2, exp: 'চিংড়ি (এবং পেঁয়াজ) উৎপাদন বৃদ্ধিকে গোলাপি বিপ্লব বলা হয়।'},
+      {q: '\'ধূসর বিপ্লব\' (Grey Revolution) কীসের সঙ্গে সম্পর্কিত?', opts: ['অপরিশোধিত তেল উৎপাদন', 'সার উৎপাদন', 'আলু উৎপাদন', 'সিমেন্ট উৎপাদন'], ans: 1, exp: 'সার উৎপাদনের বিপুল বৃদ্ধিকে ধূসর বিপ্লব বলা হয়।'},
+      {q: 'দুগ্ধ উৎপাদনের উন্নতির জন্য ন্যাশনাল ডেয়ারি ডেভেলপমেন্ট বোর্ড (NDDB) কত সালে গঠিত হয়?', opts: ['১৯৫০ সালে', '১৯৬৫ সালে', '১৯৭৫ সালে', '১৯৮০ সালে'], ans: 1, exp: 'দুগ্ধ শিল্পের উন্নতির জন্য ১৯৬৫ সালে ন্যাশনাল ডেয়ারি ডেভেলপমেন্ট বোর্ড (NDDB) গঠিত হয়।'},
+      {q: 'ভারতের কোন দুগ্ধ সমবায় সংস্থাকে শ্বেত বিপ্লবের পণ্যের মডেল হিসেবে নির্বাচন করা হয়?', opts: ['মাদার ডেয়ারি', 'মেট্রো ডেয়ারি', 'আমুল (AMUL)', 'সুধা'], ans: 2, exp: '\'আমুল\'-কে দুধ উৎপাদন ও বিতরণের একটি সফল সমবায় মডেল হিসেবে নির্বাচন করা হয়।'},
+      {q: 'ভারতে প্রথম সবুজ বিপ্লব কোন দশকে শুরু হয়েছিল?', opts: ['১৯৪০-এর দশকে', '১৯৫০-এর দশকে', '১৯৬০-এর দশকে', '২০০০-এর দশকে'], ans: 2, exp: 'ভারতে প্রথম সবুজ বিপ্লব শুরু হয়েছিল মূলত ১৯৬০-এর দশকে (১৯৬৬-৬৭ সাল নাগাদ)।'},
+      {q: 'প্রথম সবুজ বিপ্লব ভারতের কোন কোন রাজ্যে সবচেয়ে বেশি সাফল্য লাভ করেছিল?', opts: ['কেরল-তামিলনাড়ু-মহারাষ্ট্র', 'পাঞ্জাব-পশ্চিমবঙ্গ-ওডিশা', 'পাঞ্জাব-হরিয়ানা-দিল্লি (পশ্চিমাঞ্চল)', 'অসম-মেঘালয়-ত্রিপুরা'], ans: 2, exp: 'প্রথম সবুজ বিপ্লব সবচেয়ে বেশি প্রভাব ফেলেছিল ভারতের উত্তর-পশ্চিমাঞ্চলের রাজ্যগুলিতে, যেমন পাঞ্জাব, হরিয়ানা ও দিল্লি অঞ্চলে।'},
+      {q: 'ভারতের নতুন জাতীয় কৃষি নীতিকে (যা খাদ্যের সঙ্গে পুষ্টি সুরক্ষা ও সকল কৃষিবিপ্লবকে একীভূত করে) কী বিপ্লবরূপে আখ্যা দেওয়া হয়?', opts: ['রামধনু বিপ্লব (Rainbow Revolution)', 'খাদ্য শৃঙ্খল বিপ্লব', 'সত্যাগ্রহ বিপ্লব', 'নীল বিপ্লব'], ans: 0, exp: 'ভারতের নতুন জাতীয় কৃষি নীতিকে \'রামধনু বিপ্লব\' বা Rainbow Revolution রূপে আখ্যা দেওয়া হয়, যার লক্ষ্য কৃষির সার্বিক বিকাশ।'},
+      {q: 'সবুজ বিপ্লবের সাফল্যমণ্ডিত হওয়ার পেছনে সবচেয়ে গুরুত্বপূর্ণ অত্যাবশ্যকীয় উপাদান কোনটি ছিল?', opts: ['শুধুমাত্র রাসায়নিক সার', 'উচ্চফলনশীল বীজ (HYV seeds)', 'শুধুমাত্র জলসেচ ব্যবস্থা', 'কীটনাশকের ব্যবহার'], ans: 1, exp: 'উচ্চফলনশীল বীজ (HYV seeds) না থাকলে সবুজ বিপ্লব এত বড় সাফল্যমণ্ডিত হত না, এটিই ছিল এর প্রধান অত্যাবশ্যকীয় উপাদান।'},
+      {q: '\'স্বর্ণালি বিপ্লব\' (Golden Revolution) কোন দ্রব্য উৎপাদনের সঙ্গে জড়িত?', opts: ['পাট উৎপাদন', 'ফল ও মধু উৎপাদন (হর্টিকালচার)', 'তৈলবীজ উৎপাদন', 'অপরিশোধিত তেল উৎপাদন'], ans: 1, exp: 'ফল, আপেল ও মধু উৎপাদন বৃদ্ধিকে স্বর্ণালি বিপ্লব (Golden Revolution) বলা হয়।'},
+      {q: 'দুধ বা দুগ্ধ উৎপাদনের নিরিখে বিশ্বে ভারতের স্থান কত?', opts: ['প্রথম', 'দ্বিতীয়', 'তৃতীয়', 'চতুর্থ'], ans: 0, exp: 'শ্বেত বিপ্লব ও অপারেশন ফ্লাডের প্রভাবে দুধ উৎপাদনে ভারত বর্তমানে পৃথিবীতে প্রথম স্থান অধিকার করে।'}
+    ]
+  }
+};
+
+const LABELS = ['ক', 'খ', 'গ', 'ঘ'];
+let currentSetId = 1;
+let cur = 0, score = 0, wrong = 0, answered = false, timerInterval, timeLeft = 10 * 60;
+let userAnswers = [];
+let isLoggedIn = false;
+let currentUser = null;
+let pendingSetId = null;
+
+function buildHub() {
+  const grid = document.getElementById('setGrid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= TOTAL_SETS; i++) {
+    const set = allSets[i];
+    const card = document.createElement('div');
+    card.className = 'set-card';
+    card.setAttribute('data-set-id', i);
+    card.innerHTML = `
+      <div class="icon">${set.icon}</div>
+      <div class="set-num">${set.name}</div>
+      <div class="set-title">${set.topic}</div>
+      <div class="set-meta"><span>১৫ প্রশ্ন</span><span>১০ মিনিট</span></div>
+    `;
+    card.onclick = () => selectSet(i);
+    grid.appendChild(card);
+  }
+  updateHubBadges();
+}
+
+function updateHubBadges() {
+  if (!currentUser) return;
+  const cards = document.querySelectorAll('.set-card');
+  cards.forEach(card => {
+    const setId = parseInt(card.getAttribute('data-set-id'));
+    const attempts = getSetAttempts(currentUser.username, setId);
+    const remaining = MAX_ATTEMPTS - attempts;
+    
+    // Remove existing badge
+    const existingBadge = card.querySelector('.attempt-badge');
+    if (existingBadge) existingBadge.remove();
+    
+    // Create new badge
+    const badge = document.createElement('div');
+    badge.className = 'attempt-badge' + (remaining <= 0 ? ' full' : '');
+    badge.textContent = remaining > 0 ? `বাকি: ${remaining}/${MAX_ATTEMPTS}` : `সম্পূর্ণ`;
+    card.appendChild(badge);
+    
+    // Disable card if no attempts left
+    if (remaining <= 0) {
+      card.style.opacity = '0.6';
+      card.style.cursor = 'not-allowed';
+      card.onclick = () => {
+        alert(`⚠️ আপনি ${allSets[setId].name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন। আর Test দেওয়া সম্ভব নয়।`);
+      };
+    }
+  });
+}
+
+function showHub() {
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('timerBox').classList.remove('danger');
+  clearInterval(timerInterval);
+  if (currentUser) {
+    document.getElementById('hubUserInfo').innerHTML = `👤 ${currentUser.username} — Test দিতে সেট সিলেক্ট করো।`;
+    updateHubBadges();
+  } else {
+    document.getElementById('hubUserInfo').innerHTML = '';
+  }
+}
+
+function goToHub() {
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('timerBox').classList.remove('danger');
+  clearInterval(timerInterval);
+  isLoggedIn = false;
+  currentUser = null;
+  document.getElementById('hubUserInfo').innerHTML = '';
+  // Reset badges (remove them)
+  document.querySelectorAll('.attempt-badge').forEach(b => b.remove());
+  document.querySelectorAll('.set-card').forEach(card => {
+    card.style.opacity = '';
+    card.style.cursor = '';
+    const setId = parseInt(card.getAttribute('data-set-id'));
+    card.onclick = () => selectSet(setId);
+  });
+}
+
+function selectSet(id) {
+  currentSetId = id;
+  const set = allSets[id];
+  pendingSetId = id;
+  document.getElementById('loginSetName').textContent = `📚 ${set.name} — ${set.topic}`;
+  document.getElementById('loginOverlay').classList.add('active');
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('limitInfo').style.display = 'none';
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginUsername').focus();
+}
+
+function doLoginFromSet() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorEl = document.getElementById('loginError');
+  const limitInfo = document.getElementById('limitInfo');
+  const loginBtn = document.getElementById('loginBtn');
+
+  if (!username || !password) {
+    errorEl.textContent = '❌ দয়া করে ইউজারনেম ও পাসওয়ার্ড দিন।';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const user = userData.find(u => u.username === username && u.password === password);
+  if (user) {
+    // localStorage থেকে attempt count লোড করুন
+    const setAttempts = getSetAttempts(username, currentSetId);
+    if (setAttempts >= MAX_ATTEMPTS) {
+      limitInfo.style.display = 'block';
+      document.getElementById('limitMsg').textContent = `আপনি এই অ্যাকাউন্ট দিয়ে ${allSets[currentSetId].name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন। আর Test দেওয়া সম্ভব নয়।`;
+      errorEl.style.display = 'none';
+      loginBtn.disabled = true;
+      return;
+    }
+    isLoggedIn = true;
+    currentUser = user;
+    errorEl.style.display = 'none';
+    limitInfo.style.display = 'none';
+    loginBtn.disabled = false;
+    document.getElementById('loginOverlay').classList.remove('active');
+    document.getElementById('hubUserInfo').innerHTML = `👤 ${currentUser.username} — Test দিতে সেট সিলেক্ট করো।`;
+    startQuiz(currentSetId);
+  } else {
+    errorEl.textContent = '❌ ভুল ইউজারনেম বা পাসওয়ার্ড। আবার চেষ্টা করুন।';
+    errorEl.style.display = 'block';
+    limitInfo.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLoginFromSet();
+  });
+  document.getElementById('loginUsername').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLoginFromSet();
+  });
+  buildHub();
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+});
+
+function startQuiz(setId) {
+  if (!isLoggedIn || !currentUser) return;
+  // localStorage থেকে attempt count চেক করুন
+  const setAttempts = getSetAttempts(currentUser.username, setId);
+  if (setAttempts >= MAX_ATTEMPTS) {
+    alert(`⚠️ আপনি এই সেটের সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন।`);
+    return;
+  }
+  // Attempt count বাড়ান এবং localStorage এ সেভ করুন
+  incrementSetAttempts(currentUser.username, setId);
+  
+  cur = 0; score = 0; wrong = 0; answered = false;
+  timeLeft = 10 * 60; userAnswers = [];
+  document.getElementById('hubPage').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('testArea').classList.remove('hidden');
+  document.getElementById('timerBox').classList.remove('danger');
+  const set = allSets[setId];
+  document.getElementById('testSetLabel').textContent = set.name;
+  document.getElementById('testSetName').textContent = 'ভারতের ভূগোল';
+  document.getElementById('testTopic').textContent = set.topic;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(tick, 1000);
+  loadQ();
+}
+
+function tick() {
+  timeLeft--;
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  document.getElementById('timerDisplay').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (timeLeft <= 60) document.getElementById('timerBox').classList.add('danger');
+  if (timeLeft <= 0) { clearInterval(timerInterval); showResult(); }
+}
+
+function loadQ() {
+  answered = false;
+  const set = allSets[currentSetId];
+  const q = set.questions[cur];
+  document.getElementById('qNum').textContent = 'প্রশ্ন ' + (cur + 1) + ' / ' + set.questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((cur + 1) / set.questions.length * 100) + '%';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = cur === set.questions.length - 1 ? 'ফলাফল দেখো' : 'পরবর্তী →';
+  document.getElementById('nextBtn').onclick = nextQ;
+  document.getElementById('explanation').classList.remove('show');
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = '<div class="opt-circle">' + LABELS[i] + '</div><div class="opt-text">' + o + '</div>';
+    btn.onclick = () => answer(i);
+    opts.appendChild(btn);
+  });
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const set = allSets[currentSetId];
+  const q = set.questions[cur];
+  userAnswers[cur] = i;
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.classList.add('disabled'));
+  btns[q.ans].classList.add('correct');
+  if (i !== q.ans) { btns[i].classList.add('wrong'); wrong++; }
+  else score++;
+  document.getElementById('scoreShow').textContent = 'সঠিক: ' + score + ' | ভুল: ' + wrong;
+  document.getElementById('explanationText').innerHTML = '<strong>ব্যাখ্যা:</strong> ' + q.exp;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQ() {
+  const set = allSets[currentSetId];
+  cur++;
+  if (cur >= set.questions.length) { clearInterval(timerInterval); showResult(); return; }
+  loadQ();
+}
+
+function showResult() {
+  document.getElementById('testArea').classList.add('hidden');
+  const rw = document.getElementById('resultWrap');
+  rw.classList.add('show');
+  const set = allSets[currentSetId];
+  const pct = Math.round(score / set.questions.length * 100);
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('rbCorrect').textContent = score;
+  document.getElementById('rbWrong').textContent = wrong;
+  document.getElementById('rbPct').textContent = pct + '%';
+  
+  // localStorage থেকে attempt count দেখান
+  const currentAttempts = getSetAttempts(currentUser.username, currentSetId);
+  const remaining = MAX_ATTEMPTS - currentAttempts;
+  
+  document.getElementById('attemptInfo').innerHTML = `👤 ${currentUser.username} — ${set.name}: বাকি আছে <strong>${remaining}</strong> বার Test দেওয়ার সুযোগ (সর্বোচ্চ ${MAX_ATTEMPTS} বার)`;
+  
+  // Retry button disable যদি attempts শেষ
+  const retryBtn = document.getElementById('retryBtn');
+  if (remaining <= 0) {
+    retryBtn.disabled = true;
+    retryBtn.textContent = 'আর Test দেওয়া যাবে না';
+  } else {
+    retryBtn.disabled = false;
+    retryBtn.textContent = 'আবার চেষ্টা করো';
+  }
+  
+  const grades = [[90,'🌟','অসাধারণ!'],[70,'👍','খুব ভালো!'],[50,'📚','ভালো চেষ্টা!'],[0,'💪','চেষ্টা চালিয়ে যাও!']];
+  const g = grades.find(x => pct >= x[0]);
+  document.getElementById('resultIcon').textContent = g[1];
+  document.getElementById('resultGrade').textContent = g[2] + ' (' + set.topic + ')';
+}
+
+function showReview() {
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('testArea').classList.remove('hidden');
+  cur = 0;
+  loadReview();
+}
+
+function loadReview() {
+  const set = allSets[currentSetId];
+  if (cur >= set.questions.length) {
+    document.getElementById('testArea').classList.add('hidden');
+    document.getElementById('resultWrap').classList.add('show');
+    return;
+  }
+  const q = set.questions[cur];
+  document.getElementById('qNum').textContent = 'Review — প্রশ্ন ' + (cur + 1) + ' / ' + set.questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((cur + 1) / set.questions.length * 100) + '%';
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').textContent = cur === set.questions.length - 1 ? 'শেষ করো' : 'পরবর্তী →';
+  document.getElementById('nextBtn').onclick = () => { cur++; loadReview(); };
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt disabled';
+    if (i === q.ans) btn.classList.add('correct');
+    else if (userAnswers[cur] === i) btn.classList.add('wrong');
+    btn.innerHTML = '<div class="opt-circle">' + LABELS[i] + '</div><div class="opt-text">' + o + '</div>';
+    opts.appendChild(btn);
+  });
+  document.getElementById('explanationText').innerHTML = '<strong>ব্যাখ্যা:</strong> ' + q.exp;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('scoreShow').textContent = 'সবুজ = সঠিক উত্তর';
+}
+</script>
+
+</body>
+</html>
